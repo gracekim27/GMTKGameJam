@@ -20,6 +20,11 @@ public class PlayerScript : MonoBehaviour
     private string currentAnimal;
     private HealthbarScript healthBar;
 
+    public AudioSource audioSource;
+    public AudioClip footsteps;
+    public float volume=0.5f;
+    private bool isMoving = false;
+
     [HideInInspector] public GameObject transformInto; //The object the player has just killed and is about to transform into
     [SerializeField] public float maxXP;
     [HideInInspector] public float currentXP;
@@ -65,6 +70,7 @@ public class PlayerScript : MonoBehaviour
         attackTimer = 0;
         currentXP = 0;
         healthBar = GetComponentInChildren<HealthbarScript>();
+        audioSource = GetComponent<AudioSource>();
 
         transformInto = null;
 
@@ -103,6 +109,17 @@ public class PlayerScript : MonoBehaviour
         }
         else if (horizontal == 1) {
             sprRender.flipX = false;
+        }
+
+        //Footsteps Sound
+        if ((horizontal != 0 || vertical != 0) && !isMoving) {
+        isMoving = true;
+        audioSource.clip = footsteps;
+        audioSource.Play();
+            } 
+        else if (horizontal == 0 && vertical == 0) {
+            isMoving = false;
+            audioSource.Stop();
         }
 
         //Increment attack timer every frame (counts how long it's been since last attack)

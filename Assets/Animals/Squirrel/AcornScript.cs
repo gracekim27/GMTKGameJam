@@ -9,6 +9,10 @@ public class AcornScript : MonoBehaviour
     private float moveSpeed;
     public Vector3 dir;
     public string shotBy;
+    public AudioSource audioSource;
+    public AudioClip clip;
+    public float volume=0.5f;
+
     /**
     shotBy could be:
         Player
@@ -20,7 +24,9 @@ public class AcornScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        dir.Normalize();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = clip;
+        audioSource.Play();
 
         if (shotBy == "Player") { 
             moveSpeed = moveSpeedPlayer;

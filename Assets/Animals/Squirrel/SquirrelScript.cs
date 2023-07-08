@@ -30,6 +30,7 @@ public class SquirrelScript : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         gameObject.GetComponent<EnemyDamageScript>().currentHP = maxHP;
 
+
         //Initialize health bar
         healthBar = GetComponentInChildren<HealthbarScript>();
         healthBar.healthBarSize = healthBarSize;
