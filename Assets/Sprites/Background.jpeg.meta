@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ffa06a54b5dc94a6781132745f2e7f67
+guid: db91b774ee93345388c1e5b36043dbc7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -42,7 +42,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -115,91 +115,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: SquirrelRunSpriteSheet_0
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 3
-        width: 29
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6c63d9ba5ccd64eaf899808a8b99984b
-      internalID: -860050184
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SquirrelRunSpriteSheet_1
-      rect:
-        serializedVersion: 2
-        x: 33
-        y: 3
-        width: 30
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6b692901af7a040289b9a27f61bc6897
-      internalID: -1469192342
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SquirrelRunSpriteSheet_2
-      rect:
-        serializedVersion: 2
-        x: 65
-        y: 3
-        width: 30
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: be79d9eb0729e4875b17ae894c325a3a
-      internalID: -712269142
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SquirrelRunSpriteSheet_3
-      rect:
-        serializedVersion: 2
-        x: 98
-        y: 3
-        width: 29
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fcf0a259c6e6d46ff9014773ae09f242
-      internalID: -1732265626
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
@@ -210,11 +126,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      SquirrelRunSpriteSheet_0: -860050184
-      SquirrelRunSpriteSheet_1: -1469192342
-      SquirrelRunSpriteSheet_2: -712269142
-      SquirrelRunSpriteSheet_3: -1732265626
+    nameFileIdTable: {}
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

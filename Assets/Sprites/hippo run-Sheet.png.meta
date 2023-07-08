@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ffa06a54b5dc94a6781132745f2e7f67
+guid: e3fe57ab2aa0e497480e0ba6e246f81e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,85 +117,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SquirrelRunSpriteSheet_0
+      name: hippo run-Sheet_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 3
-        width: 29
-        height: 27
+        x: 9
+        y: 10
+        width: 50
+        height: 41
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6c63d9ba5ccd64eaf899808a8b99984b
-      internalID: -860050184
+      spriteID: 460dff86eca7e4a81b475a1e489e4390
+      internalID: -1917013437
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SquirrelRunSpriteSheet_1
+      name: hippo run-Sheet_1
       rect:
         serializedVersion: 2
-        x: 33
-        y: 3
-        width: 30
-        height: 27
+        x: 71
+        y: 10
+        width: 52
+        height: 41
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6b692901af7a040289b9a27f61bc6897
-      internalID: -1469192342
+      spriteID: 1c529b341363b4a11885d3c3bcca7028
+      internalID: 1109013282
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SquirrelRunSpriteSheet_2
+      name: hippo run-Sheet_2
       rect:
         serializedVersion: 2
-        x: 65
-        y: 3
-        width: 30
-        height: 27
+        x: 137
+        y: 10
+        width: 50
+        height: 41
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: be79d9eb0729e4875b17ae894c325a3a
-      internalID: -712269142
+      spriteID: 172cef8fd54b8484286c7c4c45e0be61
+      internalID: 1857620142
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SquirrelRunSpriteSheet_3
+      name: hippo run-Sheet_3
       rect:
         serializedVersion: 2
-        x: 98
-        y: 3
-        width: 29
-        height: 27
+        x: 201
+        y: 9
+        width: 50
+        height: 42
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fcf0a259c6e6d46ff9014773ae09f242
-      internalID: -1732265626
+      spriteID: 8629073a32e6842f9834d9fed5a5120c
+      internalID: -107739789
       vertices: []
       indices: 
       edges: []
@@ -211,10 +211,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      SquirrelRunSpriteSheet_0: -860050184
-      SquirrelRunSpriteSheet_1: -1469192342
-      SquirrelRunSpriteSheet_2: -712269142
-      SquirrelRunSpriteSheet_3: -1732265626
+      hippo run-Sheet_0: -1917013437
+      hippo run-Sheet_1: 1109013282
+      hippo run-Sheet_2: 1857620142
+      hippo run-Sheet_3: -107739789
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
