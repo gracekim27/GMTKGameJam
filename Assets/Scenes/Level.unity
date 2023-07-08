@@ -607,7 +607,7 @@ SpriteRenderer:
   m_SortingLayerID: 1951625335
   m_SortingLayer: -1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: db91b774ee93345388c1e5b36043dbc7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 773fd24860e954e49b306df6d6860466, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -665,7 +665,7 @@ MonoBehaviour:
   squirrel: {fileID: 9027179254112546351, guid: af7f52516ffbd4288ba49211fc101ccd, type: 3}
   snake: {fileID: 6442983436487409383, guid: 03b627e347ceb40f1bb4bf1a97efb57d, type: 3}
   hippo: {fileID: 9065482878619436000, guid: cdaec872387c74fe4911257b2ca09c72, type: 3}
-  spawnCooldown: 1
+  spawnCooldown: 3
   waveNumber: 0
 --- !u!4 &2010819809
 Transform:
@@ -691,7 +691,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7610653577832139764, guid: af7f52516ffbd4288ba49211fc101ccd, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7610653577832139764, guid: af7f52516ffbd4288ba49211fc101ccd, type: 3}
       propertyPath: m_LocalPosition.x

@@ -63,6 +63,8 @@ public class PlayerScript : MonoBehaviour
         attackTimer = 0;
         healthBar = GetComponentInChildren<HealthbarScript>();
 
+        transformInto = null;
+
         //Start as a Squirrel
         currentAnimal = "Squirrel"; 
         becomeSquirrel();
@@ -104,7 +106,7 @@ public class PlayerScript : MonoBehaviour
         attackTimer += Time.deltaTime;
 
         //Transform into animal after killing it
-        if (transformInto != null) {
+        if (transformInto is not null) {
             transform.position = transformInto.transform.position;
             if (transformInto.CompareTag("Squirrel")) {
                 currentAnimal = "Squirrel";
@@ -118,6 +120,7 @@ public class PlayerScript : MonoBehaviour
                 currentAnimal = "Hippo";
                 becomeHippo();
             }
+            Destroy(transformInto);
             transformInto = null;
         }
 
@@ -144,6 +147,9 @@ public class PlayerScript : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("SnakeAttack") && other.GetComponent<SnakeAttackCircleScript>().shotBy == "Enemy") {
             currentHP--;
+        }
+        else if (other.gameObject.CompareTag("HippoAttack") && other.GetComponent<HippoAttackCircleScript>().shotBy == "Enemy") {
+            currentHP -= 2; //Hippo
         }
     }
 

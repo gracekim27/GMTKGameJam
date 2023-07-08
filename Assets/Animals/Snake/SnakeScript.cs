@@ -64,7 +64,6 @@ public class SnakeScript : MonoBehaviour
         //Die if health low
         if (currentHP <= 0) {
             player.GetComponent<PlayerScript>().transformInto = gameObject;
-            Destroy(gameObject);
         }
     }
 

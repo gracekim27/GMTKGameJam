@@ -21,11 +21,11 @@ public class SpawnerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (spawnTimer < spawnCooldown) {
+        if (spawnTimer < spawnCooldown + waveNumber) {
             spawnTimer += Time.deltaTime;
         }
         else {
-            for (int i = 0; i < waveNumber/3; i++) { // Spawn waveNumber/3 number of animals
+            for (int i = 1; i <= Mathf.Ceil((float) waveNumber/6f); i++) { // Spawn waveNumber/3 number of animals
                 Instantiate(spawnRandomAnimal(), spawnXY(), transform.rotation);
             }
 
@@ -60,7 +60,7 @@ public class SpawnerScript : MonoBehaviour
     }
 
     public GameObject spawnRandomAnimal() {
-        int randomAnimal = Random.Range(1,2);
+        int randomAnimal = Random.Range(1,4);
         GameObject spawnAnimal;
         switch (randomAnimal) {
             case 1:

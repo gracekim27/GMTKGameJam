@@ -15,7 +15,7 @@ public class EnemyDamageScript : MonoBehaviour
             currentHP--;
         }
         else if (other.gameObject.CompareTag("HippoAttack") && other.GetComponent<HippoAttackCircleScript>().shotBy == "Player") {
-            currentHP--;
+            currentHP -= 2; //Hippos do 2x dmg
         }
     }
 }

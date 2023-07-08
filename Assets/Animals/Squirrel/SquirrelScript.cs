@@ -76,9 +76,6 @@ public class SquirrelScript : MonoBehaviour
         //Die if health low
         if (currentHP <= 0) {
             player.GetComponent<PlayerScript>().transformInto = gameObject;
-            Debug.Log(player.GetComponent<PlayerScript>().transformInto == null);
-            Destroy(gameObject);
-            Debug.Log(player.GetComponent<PlayerScript>().transformInto == null);
         }
     }
 
