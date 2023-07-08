@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 5
+  xpDropped: 4
   attackCooldown: 4
   runSpeed: 0.1
   hippoAttackCircle: {fileID: 3509410435864331495, guid: 8739d463abb554450ae6e0a5b60d78e4, type: 3}

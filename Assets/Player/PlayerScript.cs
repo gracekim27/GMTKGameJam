@@ -15,20 +15,21 @@ public class PlayerScript : MonoBehaviour
 
     private float runSpeed;
     private float attackTimer;
-    public int currentHP;
+    [HideInInspector] public int currentHP;
 
     private string currentAnimal;
     private HealthbarScript healthBar;
 
-    public GameObject transformInto; //The object the player has just killed and is about to transform into
-    public Vector3 transformPos;
+    [HideInInspector] public GameObject transformInto; //The object the player has just killed and is about to transform into
+    [SerializeField] public float maxXP;
+    [HideInInspector] public float currentXP;
 
     [Header("Squirrel")]
     [SerializeField] private int squirrelHP;
     [SerializeField] private float squirrelAttackCooldown;
     [SerializeField] private float squirrelRunSpeed;
-    public RuntimeAnimatorController squirrelAnimController;
-    public GameObject acorn;
+    [SerializeField] private RuntimeAnimatorController squirrelAnimController;
+    [SerializeField] private GameObject acorn;
 
     [Header("Snake")]
     [SerializeField] private int snakeHP;
@@ -37,7 +38,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private GameObject snakeAttackCircle;
     [SerializeField] private Vector2 snakeAttackOffset;
     [SerializeField] private float snakeAttackRadius;
-    public RuntimeAnimatorController snakeAnimController;
+    [SerializeField] private RuntimeAnimatorController snakeAnimController;
 
     [Header("Hippo")]
     [SerializeField] private int hippoHP;
@@ -45,7 +46,8 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private float hippoRunSpeed;
     [SerializeField] private GameObject hippoAttackCircle;
     [SerializeField] private float hippoAttackRadius;
-    public RuntimeAnimatorController hippoAnimController;
+    [SerializeField] private RuntimeAnimatorController hippoAnimController;
+    
     /**
     currentAnimal can be one of the following:
         Squirrel
@@ -61,6 +63,7 @@ public class PlayerScript : MonoBehaviour
         sprRender = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
         attackTimer = 0;
+        currentXP = 0;
         healthBar = GetComponentInChildren<HealthbarScript>();
 
         transformInto = null;

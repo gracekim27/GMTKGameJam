@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 3
+  xpDropped: 3
   attackCooldown: 4
   runSpeed: 0.5
   snakeAttackCircle: {fileID: 3509410435864331495, guid: d3c505a9ca6d44d318ffc07ab2aaa277, type: 3}

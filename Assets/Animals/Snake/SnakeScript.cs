@@ -5,6 +5,7 @@ using UnityEngine;
 public class SnakeScript : MonoBehaviour
 {
     [SerializeField] private int maxHP;
+    [SerializeField] private float xpDropped;
     private int currentHP;
     [SerializeField] private float attackCooldown;
     private float attackTimer;
@@ -63,7 +64,15 @@ public class SnakeScript : MonoBehaviour
 
         //Die if health low
         if (currentHP <= 0) {
-            player.GetComponent<PlayerScript>().transformInto = gameObject;
+            PlayerScript playerScript = player.GetComponent<PlayerScript>();
+            if (playerScript.currentXP >= playerScript.maxXP) {
+                playerScript.transformInto = gameObject;
+                playerScript.currentXP = 0;
+            }
+            else {
+                playerScript.currentXP += xpDropped;
+                Destroy(gameObject);
+            }
         }
     }
 

@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 2
+  xpDropped: 1
   attackCooldown: 2
   runSpeed: 0.2
   circleDistance: 1.5
