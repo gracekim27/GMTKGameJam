@@ -35,57 +35,64 @@ public class BullScript : MonoBehaviour
         healthBar.healthBarSize = healthBarSize;
         healthBar.maxHP = maxHP;
         healthBar.yPos = healthBarYOffset;
+
+        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Face left if moving left, right if moving right
-        if (!anim.GetBool("isCharging")) {
-            if (transform.position.x > player.transform.position.x) {
-                sprRender.flipX = true;
-            }
-            else if (transform.position.x < player.transform.position.x) {
-                sprRender.flipX = false;
-            }
-        }
-
-        //Charge up attack
-        if (attackTimer > attackCooldown) {
-            anim.SetTrigger("Charge");
-            attackTimer = 0;
-        }
-        attackTimer += Time.deltaTime;
-
-        //If attack charged, charge towards the player
-        if (anim.GetBool("isCharging")) {
-            transform.position = Vector3.MoveTowards(transform.position, chargeTarget, chargeSpeed * Time.deltaTime);
-
-            //If arrived at the target position, stop charging
-            if (Vector3.Distance(transform.position, chargeTarget) < 0.1f) {
-                anim.SetBool("isCharging", false);
+        if (!anim.GetBool("IsDying")) {
+            //Face left if moving left, right if moving right
+            if (!anim.GetBool("isCharging")) {
+                if (transform.position.x > player.transform.position.x) {
+                    sprRender.flipX = true;
+                }
+                else if (transform.position.x < player.transform.position.x) {
+                    sprRender.flipX = false;
+                }
             }
 
-            //If charging too long, stop charging
+            //Charge up attack
             if (attackTimer > attackCooldown) {
+                anim.SetTrigger("Charge");
+                attackTimer = 0;
+            }
+            attackTimer += Time.deltaTime;
+
+            //If attack charged, charge towards the player
+            if (anim.GetBool("isCharging")) {
+                transform.position = Vector3.MoveTowards(transform.position, chargeTarget, chargeSpeed * Time.deltaTime);
+
+                //If arrived at the target position, stop charging
+                if (Vector3.Distance(transform.position, chargeTarget) < 0.1f) {
+                    anim.SetBool("isCharging", false);
+                }
+
+                //If charging too long, stop charging
+                if (attackTimer > attackCooldown) {
+                    anim.SetBool("isCharging", false);
+                }
+            }
+
+            //Update health bar
+            currentHP = gameObject.GetComponent<EnemyDamageScript>().currentHP; //Use EnemyDamageScript to find currentHP
+            healthBar.currentHP = currentHP;
+
+            //Die if health low
+            if (currentHP <= 0) {
+                healthBar.currentHP = 0;
                 anim.SetBool("isCharging", false);
-            }
-        }
-
-        //Update health bar
-        currentHP = gameObject.GetComponent<EnemyDamageScript>().currentHP; //Use EnemyDamageScript to find currentHP
-        healthBar.currentHP = currentHP;
-
-        //Die if health low
-        if (currentHP <= 0) {
-            PlayerScript playerScript = player.GetComponent<PlayerScript>();
-            if (playerScript.currentXP >= playerScript.maxXP) {
-                playerScript.transformInto = gameObject;
-                playerScript.currentXP = 0;
-            }
-            else {
-                playerScript.currentXP += xpDropped;
-                Destroy(gameObject);
+                PlayerScript playerScript = player.GetComponent<PlayerScript>();
+                if (playerScript.currentXP >= playerScript.maxXP) {       
+                    playerScript.transformInto = gameObject;
+                    playerScript.currentXP = 0;
+                }
+                else {
+                    anim.SetBool("IsDying", true);
+                    gameObject.GetComponent<Rigidbody2D>().simulated = false;
+                    playerScript.currentXP += xpDropped;
+                }
             }
         }
     }
@@ -95,5 +102,9 @@ public class BullScript : MonoBehaviour
         Vector3 directionToPlayer = player.transform.position - transform.position;
         chargeTarget = directionToPlayer.normalized * chargeDistance * Random.Range(0.75f,1.25f); //Add some random variation to charge distance
         anim.SetBool("isCharging", true);
+    }
+
+    void Die() {
+        Destroy(gameObject);
     }
 }

@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 4
-  xpDropped: 20
+  xpDropped: 4
   attackCooldown: 5
   chargeSpeed: 2.5
   chargeDistance: 1.5

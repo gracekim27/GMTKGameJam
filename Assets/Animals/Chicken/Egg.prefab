@@ -101,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeedPlayer: 2
   moveSpeedEnemy: 1
-  explodeTime: 1.4
+  explodeTime: 1
   explodeCircle: {fileID: 6095941357983003242, guid: ca75193ac4dcd40faa210924c96ddaf9, type: 3}
   dir: {x: 0, y: 0, z: 0}
   shotBy: 
@@ -115,7 +115,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

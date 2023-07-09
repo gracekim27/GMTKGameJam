@@ -191,13 +191,16 @@ public class PlayerScript : MonoBehaviour
             currentHP--;
         }
         else if (other.gameObject.CompareTag("HippoAttack") && other.GetComponent<HippoAttackCircleScript>().shotBy == "Enemy") {
-            currentHP -= 2; //Hippo deals 2x damage
+            currentHP -= 3; //Hippo deals 3x damage
+        }
+        else if (other.gameObject.CompareTag("ChickenAttack") && other.GetComponent<EggExplodeCircleScript>().shotBy == "Enemy") {
+            currentHP -= 2;
         }
     }
 
     void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Bull")) {
-            currentHP--;
+            currentHP -= 2;
         }
     }
     #endregion
@@ -307,6 +310,7 @@ public class PlayerScript : MonoBehaviour
     void hippoAttack() {
         GameObject hippoAttack = Instantiate(hippoAttackCircle, transform.position, Quaternion.identity); //Create a circle collider around the attack
         CircleCollider2D hippoAttackCollider = hippoAttack.GetComponent<CircleCollider2D>(); //Set the position and radius of the attack collider to preset values
+        hippoAttack.GetComponent<HippoAttackCircleScript>().shotBy = "Player";
 
         hippoAttackCollider.radius = hippoAttackRadius;
     }

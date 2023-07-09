@@ -35,6 +35,8 @@ public class ChickenScript : MonoBehaviour
         healthBar.healthBarSize = healthBarSize;
         healthBar.maxHP = maxHP;
         healthBar.yPos = healthBarYOffset;
+
+        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
     }
 
     // Update is called once per frame
@@ -73,15 +75,16 @@ public class ChickenScript : MonoBehaviour
 
         //Die if health low
         if (currentHP <= 0) {
+            healthBar.currentHP = 0;
             PlayerScript playerScript = player.GetComponent<PlayerScript>();
-            //if (playerScript.currentXP >= playerScript.maxXP) {
+            if (playerScript.currentXP >= playerScript.maxXP) {
                 playerScript.transformInto = gameObject;
                 playerScript.currentXP = 0;
-            //}
-            /**else {
+            }
+            else {
                 playerScript.currentXP += xpDropped;
                 Destroy(gameObject);
-            }*/
+            }
         }
     }
 

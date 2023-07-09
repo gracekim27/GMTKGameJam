@@ -35,43 +35,48 @@ public class SnakeScript : MonoBehaviour
         healthBar.healthBarSize = healthBarSize;
         healthBar.maxHP = maxHP;
         healthBar.yPos = healthBarYOffset;
+
+        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Face left if moving left, right if moving right
-        if (transform.position.x > player.transform.position.x) {
-            sprRender.flipX = true;
-        }
-        else if (transform.position.x < player.transform.position.x) {
-            sprRender.flipX = false;
-        }
-
-        //Attack
-        if (attackTimer > attackCooldown) {
-            anim.SetTrigger("Attack");
-            attackTimer = 0;
-        }
-        attackTimer += Time.deltaTime;
-
-        //Move towards player
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, runSpeed * Time.deltaTime);
-
-        //Update health bar
-        currentHP = gameObject.GetComponent<EnemyDamageScript>().currentHP; //Use EnemyDamageScript to find currentHP
-        healthBar.currentHP = currentHP;
-
-        //Die if health low
-        if (currentHP <= 0) {
-            PlayerScript playerScript = player.GetComponent<PlayerScript>();
-            if (playerScript.currentXP >= playerScript.maxXP) {
-                playerScript.transformInto = gameObject;
-                playerScript.currentXP = 0;
+        if (!anim.GetBool("IsDying")) {
+            //Face left if moving left, right if moving right
+            if (transform.position.x > player.transform.position.x) {
+                sprRender.flipX = true;
             }
-            else {
-                playerScript.currentXP += xpDropped;
-                Destroy(gameObject);
+            else if (transform.position.x < player.transform.position.x) {
+                sprRender.flipX = false;
+            }
+
+            //Attack
+            if (attackTimer > attackCooldown) {
+                anim.SetTrigger("Attack");
+                attackTimer = 0;
+            }
+            attackTimer += Time.deltaTime;
+
+            //Move towards player
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, runSpeed * Time.deltaTime);
+
+            //Update health bar
+            currentHP = gameObject.GetComponent<EnemyDamageScript>().currentHP; //Use EnemyDamageScript to find currentHP
+            healthBar.currentHP = currentHP;
+
+            //Die if health low
+            if (currentHP <= 0) {
+                PlayerScript playerScript = player.GetComponent<PlayerScript>();
+                if (playerScript.currentXP >= playerScript.maxXP) {
+                    playerScript.transformInto = gameObject;
+                    playerScript.currentXP = 0;
+                }
+                else {
+                    anim.SetBool("IsDying", true);
+                    gameObject.GetComponent<Rigidbody2D>().simulated = false;
+                    playerScript.currentXP += xpDropped;
+                }
             }
         }
     }
@@ -91,5 +96,9 @@ public class SnakeScript : MonoBehaviour
         GameObject snakeAttack = Instantiate(snakeAttackCircle, attackCirclePos, Quaternion.identity); //Create a circle collider around the attack
 
         snakeAttack.GetComponent<SnakeAttackCircleScript>().shotBy = "Enemy";
+    }
+
+    void Die() {
+        Destroy(gameObject);
     }
 }
