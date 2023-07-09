@@ -20,10 +20,16 @@ public class PlayerScript : MonoBehaviour
     [HideInInspector] public string currentAnimal;
     private HealthbarScript healthBar;
 
-
     [HideInInspector] public GameObject transformInto; //The object the player has just killed and is about to transform into
     [SerializeField] public float maxXP;
     [HideInInspector] public float currentXP;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource playerAudioSource;
+    [SerializeField] private AudioClip squirrelFootsteps;
+    [SerializeField] private float squirrelFootstepDuration;
+    [SerializeField] private AudioClip bodySwitchSound;
+    private float footstepTimer;
 
     [Header("Squirrel")]
     [SerializeField] private int squirrelHP;
@@ -130,6 +136,8 @@ public class PlayerScript : MonoBehaviour
 
         //Transform into animal after killing it
         if (transformInto is not null) {
+            playerAudioSource.volume = 0.05f;
+            playerAudioSource.PlayOneShot(bodySwitchSound);
             transform.position = transformInto.transform.position;
             if (transformInto.CompareTag("Squirrel")) {
                 currentAnimal = "Squirrel";
@@ -217,6 +225,13 @@ public class PlayerScript : MonoBehaviour
     }
     void beSquirrel() //This runs every frame the player is a squirrel
     {
+        if (footstepTimer >= squirrelFootstepDuration) {
+            playerAudioSource.volume = 0.1f;
+            playerAudioSource.PlayOneShot(squirrelFootsteps);
+            footstepTimer = 0;
+        }
+        footstepTimer += Time.deltaTime;
+
         //Attack
         if (Input.GetMouseButtonDown(0) && attackTimer > squirrelAttackCooldown) {
             Vector3 shootDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position; //Determine direction to shoot

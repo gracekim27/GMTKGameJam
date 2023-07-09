@@ -41,7 +41,6 @@ public class XPBarScript : MonoBehaviour
     }
 
     void textBob() {
-        Debug.Log(transform.position);
         float theta = Time.timeSinceLevelLoad / textBobPeriod;
         float distance = textBobAmplitude * Mathf.Sin(theta);
         displayText.transform.position = startPos + Vector3.up * distance;

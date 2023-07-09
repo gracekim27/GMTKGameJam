@@ -16,6 +16,8 @@ public class SquirrelScript : MonoBehaviour
     private SpriteRenderer sprRender;
     [SerializeField] private GameObject acorn;
     [SerializeField] private GameObject thisObject;
+    [SerializeField] private AudioSource squirrelAudioSource;
+    [SerializeField] private AudioClip squirrelDeathSound;
 
     [Header("Healthbar")]
     [SerializeField] private float healthBarSize;
@@ -79,6 +81,8 @@ public class SquirrelScript : MonoBehaviour
 
             //Die if health low
             if (currentHP <= 0) {
+                squirrelAudioSource.volume = 0.1f;
+                squirrelAudioSource.PlayOneShot(squirrelDeathSound);
                 healthBar.currentHP = 0;
                 PlayerScript playerScript = player.GetComponent<PlayerScript>();
                 if (playerScript.currentXP >= playerScript.maxXP) {

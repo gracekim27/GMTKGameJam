@@ -21,6 +21,9 @@ public class HippoScript : MonoBehaviour
     [SerializeField] private float healthBarYOffset;
     private HealthbarScript healthBar;
 
+    [SerializeField] private AudioSource hippoAudioSource;
+    [SerializeField] private AudioClip hippoDeathSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,6 +69,10 @@ public class HippoScript : MonoBehaviour
 
             //Die if health low
             if (currentHP <= 0) {
+                hippoAudioSource.volume = 0.4f;
+                hippoAudioSource.PlayOneShot(hippoDeathSound);
+
+                healthBar.currentHP = 0;
                 PlayerScript playerScript = player.GetComponent<PlayerScript>();
                 if (playerScript.currentXP >= playerScript.maxXP) {
                     playerScript.transformInto = gameObject;

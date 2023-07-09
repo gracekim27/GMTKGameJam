@@ -22,6 +22,10 @@ public class ChickenScript : MonoBehaviour
     [SerializeField] private float healthBarYOffset;
     private HealthbarScript healthBar;
 
+    [SerializeField] private AudioSource chickenAudioSource;
+    [SerializeField] private AudioClip chickenDeathSound;
+    [SerializeField] private AudioClip chickenEggLaySound;
+
     // Start is called before the first frame update
     void Start()
     {        
@@ -75,6 +79,9 @@ public class ChickenScript : MonoBehaviour
 
         //Die if health low
         if (currentHP <= 0) {
+            chickenAudioSource.volume = 0.2f;
+            chickenAudioSource.PlayOneShot(chickenDeathSound);
+
             healthBar.currentHP = 0;
             PlayerScript playerScript = player.GetComponent<PlayerScript>();
             if (playerScript.currentXP >= playerScript.maxXP) {
@@ -89,6 +96,10 @@ public class ChickenScript : MonoBehaviour
     }
 
     void chickenAttack() {
+        chickenAudioSource.clip = chickenEggLaySound;
+        chickenAudioSource.volume = 0.2f;
+        chickenAudioSource.Play();
+
         Vector3 shootDirection = player.transform.position - transform.position; //Determine direction to shoot
         shootDirection.z = 0;
         Quaternion randomRotation = Quaternion.Euler(0, 0, Random.Range(0.0f, 360.0f));

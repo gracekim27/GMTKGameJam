@@ -21,6 +21,11 @@ public class BullScript : MonoBehaviour
     [SerializeField] private float healthBarYOffset;
     private HealthbarScript healthBar;
 
+    [SerializeField] private AudioClip bullDeathSound;
+    [SerializeField] private AudioSource bullAudioSource;
+    [SerializeField] private AudioClip bullDashSound;
+    [SerializeField] private AudioClip bullFootstepSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +60,7 @@ public class BullScript : MonoBehaviour
 
             //Charge up attack
             if (attackTimer > attackCooldown) {
+                bullAudioSource.PlayOneShot(bullDashSound, 0.1f);
                 anim.SetTrigger("Charge");
                 attackTimer = 0;
             }
@@ -81,6 +87,7 @@ public class BullScript : MonoBehaviour
 
             //Die if health low
             if (currentHP <= 0) {
+                bullAudioSource.PlayOneShot(bullDeathSound, 0.5f);
                 healthBar.currentHP = 0;
                 anim.SetBool("isCharging", false);
                 PlayerScript playerScript = player.GetComponent<PlayerScript>();
@@ -98,6 +105,9 @@ public class BullScript : MonoBehaviour
     }
 
     void bullAttack() {
+        bullAudioSource.volume = 0.2f;
+        bullAudioSource.clip = bullFootstepSound;
+        bullAudioSource.Play();
         anim.SetTrigger("Attack");
         Vector3 directionToPlayer = player.transform.position - transform.position;
         chargeTarget = directionToPlayer.normalized * chargeDistance * Random.Range(0.75f,1.25f); //Add some random variation to charge distance

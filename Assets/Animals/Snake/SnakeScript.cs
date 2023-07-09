@@ -17,6 +17,9 @@ public class SnakeScript : MonoBehaviour
     [SerializeField] private Vector2 snakeAttackOffset;
     [SerializeField] private float snakeAttackRadius;
 
+    [SerializeField] private AudioSource snakeAudioSource;
+    [SerializeField] private AudioClip snakeSlap;
+
     [Header("Healthbar")]
     [SerializeField] private float healthBarSize;
     [SerializeField] private float healthBarYOffset;
@@ -67,6 +70,7 @@ public class SnakeScript : MonoBehaviour
 
             //Die if health low
             if (currentHP <= 0) {
+                healthBar.currentHP = 0;
                 PlayerScript playerScript = player.GetComponent<PlayerScript>();
                 if (playerScript.currentXP >= playerScript.maxXP) {
                     playerScript.transformInto = gameObject;
@@ -82,6 +86,8 @@ public class SnakeScript : MonoBehaviour
     }
 
     void snakeAttack() {
+        snakeAudioSource.volume = 0.07f;
+        snakeAudioSource.PlayOneShot(snakeSlap);
         Vector3 attackCirclePos;
 
         if (!sprRender.flipX) { //Attack right
