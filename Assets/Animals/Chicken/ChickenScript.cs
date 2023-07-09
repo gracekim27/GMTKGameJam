@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SnakeScript : MonoBehaviour
+public class ChickenScript : MonoBehaviour
 {
     [SerializeField] private int maxHP;
     [SerializeField] private float xpDropped;
@@ -10,12 +10,12 @@ public class SnakeScript : MonoBehaviour
     [SerializeField] private float attackCooldown;
     private float attackTimer;
     [SerializeField] private float runSpeed;
+    [SerializeField] private float circleDistance;
     private GameObject player;
     private Animator anim;
     private SpriteRenderer sprRender;
-    [SerializeField] private GameObject snakeAttackCircle;
-    [SerializeField] private Vector2 snakeAttackOffset;
-    [SerializeField] private float snakeAttackRadius;
+    [SerializeField] private GameObject egg;
+    private bool isLayingEgg;
 
     [Header("Healthbar")]
     [SerializeField] private float healthBarSize;
@@ -24,7 +24,7 @@ public class SnakeScript : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    {        
         anim = gameObject.GetComponent<Animator>();
         sprRender = gameObject.GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
@@ -51,16 +51,25 @@ public class SnakeScript : MonoBehaviour
             sprRender.flipX = false;
         }
 
-        //Attack
+        //Lay eggs
         if (attackTimer > attackCooldown) {
+            isLayingEgg = true;
             anim.SetTrigger("Attack");
             attackTimer = 0;
         }
         attackTimer += Time.deltaTime;
 
-        //Move towards player
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, runSpeed * Time.deltaTime);
-
+        //Move towards player if further than circleDistance, back up if closer than circleDistance
+        if (!isLayingEgg) {
+            float dist = Vector3.Distance(transform.position, player.transform.position);
+            if (dist > circleDistance) {
+                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, runSpeed * Time.deltaTime);
+            }
+            else {
+                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, -runSpeed * Time.deltaTime);
+            }
+        }
+        
         //Update health bar
         currentHP = gameObject.GetComponent<EnemyDamageScript>().currentHP; //Use EnemyDamageScript to find currentHP
         healthBar.currentHP = currentHP;
@@ -79,20 +88,19 @@ public class SnakeScript : MonoBehaviour
         }
     }
 
-    void snakeAttack() {
-        Vector3 attackCirclePos;
-
-        if (!sprRender.flipX) { //Attack right
-            attackCirclePos = new Vector3(transform.position.x+snakeAttackOffset.x, transform.position.y+snakeAttackOffset.y, transform.position.z);
-            snakeAttackCircle.transform.position = attackCirclePos;
-        }
-        else { //Attack left
-            attackCirclePos = new Vector3(transform.position.x-snakeAttackOffset.x, transform.position.y+snakeAttackOffset.y, transform.position.z);
-            snakeAttackCircle.transform.position = attackCirclePos;
-        }
-
-        GameObject snakeAttack = Instantiate(snakeAttackCircle, attackCirclePos, Quaternion.identity); //Create a circle collider around the attack
-
-        snakeAttack.GetComponent<SnakeAttackCircleScript>().shotBy = "Enemy";
+    void chickenAttack() {
+        Vector3 shootDirection = player.transform.position - transform.position; //Determine direction to shoot
+        shootDirection.z = 0;
+        Quaternion randomRotation = Quaternion.Euler(0, 0, Random.Range(0.0f, 360.0f));
+        GameObject eggShot = Instantiate(egg, transform.position, randomRotation); //Spawn bullet with random rotation
+        eggShot.GetComponent<EggScript>().dir = shootDirection.normalized;
+        eggShot.GetComponent<EggScript>().shotBy = "Enemy";
+        isLayingEgg = false;
     }
+
+    // void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawWireSphere(transform.position, circleDistance);
+    // }
 }

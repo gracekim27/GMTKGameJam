@@ -61,7 +61,7 @@ public class SpawnerScript : MonoBehaviour
     }
 
     public GameObject spawnRandomAnimal() {
-        int randomAnimal = Random.Range(4,5);
+        int randomAnimal = Random.Range(1,5);
         GameObject spawnAnimal;
         switch (randomAnimal) {
             case 1:

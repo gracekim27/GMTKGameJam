@@ -15,7 +15,13 @@ public class EnemyDamageScript : MonoBehaviour
             currentHP--;
         }
         else if (other.gameObject.CompareTag("HippoAttack") && other.GetComponent<HippoAttackCircleScript>().shotBy == "Player") {
-            currentHP -= 2; //Hippos do 2x dmg
+            currentHP -= 3; //Hippos do 3x dmg
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Player") && other.gameObject.GetComponent<PlayerScript>().currentAnimal == "Bull") {
+            currentHP -= 2; //Bulls do 2x dmg
         }
     }
 }

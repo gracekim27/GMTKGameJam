@@ -127,7 +127,7 @@ MonoBehaviour:
   xpDropped: 20
   attackCooldown: 5
   chargeSpeed: 2.5
-  chargeDistance: 1.75
+  chargeDistance: 1.5
   healthBarSize: 1.5
   healthBarYOffset: 0.2
 --- !u!114 &6573257570018959046
@@ -189,7 +189,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 7
 --- !u!1001 &5146215973130780663
 PrefabInstance:
   m_ObjectHideFlags: 0

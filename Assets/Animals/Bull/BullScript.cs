@@ -28,7 +28,7 @@ public class BullScript : MonoBehaviour
         sprRender = gameObject.GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         gameObject.GetComponent<EnemyDamageScript>().currentHP = maxHP;
-        anim.SetBool("isCharging", false);
+        attackTimer = attackCooldown - 0.5f; //bulls charge almost immediately upon spawning
 
         //Initialize health bar
         healthBar = GetComponentInChildren<HealthbarScript>();
@@ -60,10 +60,16 @@ public class BullScript : MonoBehaviour
         //If attack charged, charge towards the player
         if (anim.GetBool("isCharging")) {
             transform.position = Vector3.MoveTowards(transform.position, chargeTarget, chargeSpeed * Time.deltaTime);
-        }
-        //If arrived at the target position, stop charging
-        if (Vector3.Distance(transform.position, chargeTarget) < 0.1f) {
-            anim.SetBool("isCharging", false);
+
+            //If arrived at the target position, stop charging
+            if (Vector3.Distance(transform.position, chargeTarget) < 0.1f) {
+                anim.SetBool("isCharging", false);
+            }
+
+            //If charging too long, stop charging
+            if (attackTimer > attackCooldown) {
+                anim.SetBool("isCharging", false);
+            }
         }
 
         //Update health bar

@@ -17,7 +17,7 @@ public class PlayerScript : MonoBehaviour
     private float attackTimer;
     [HideInInspector] public int currentHP;
 
-    private string currentAnimal;
+    [HideInInspector] public string currentAnimal;
     private HealthbarScript healthBar;
 
 
@@ -53,6 +53,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private int bullHP;
     [SerializeField] private float bullAttackCooldown;
     [SerializeField] private float bullChargeSpeed;
+    [SerializeField] private float bullChargeTurn;
     private Vector3 chargeTarget;
     [SerializeField] private RuntimeAnimatorController bullAnimController;
     
@@ -109,6 +110,10 @@ public class PlayerScript : MonoBehaviour
         //Movement script
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
+
+        if (currentAnimal == "Bull" && anim.GetBool("isCharging")) {
+            horizontal = Mathf.Sign(chargeTarget.x - transform.position.x); //Flip bull around depending on if charging right or left
+        }
         if (horizontal == -1) { 
             sprRender.flipX = true; 
         }
@@ -149,12 +154,14 @@ public class PlayerScript : MonoBehaviour
     //More movement handling
     private void FixedUpdate() 
     {
-        if (horizontal != 0 && vertical != 0) {// Check for diagonal movement
-            // limit movement speed diagonally, so you move at 70% speed
-            horizontal *= moveLimiter;
-            vertical *= moveLimiter;
+        if (currentAnimal != "Bull") {
+            if (horizontal != 0 && vertical != 0) {// Check for diagonal movement
+                // limit movement speed diagonally, so you move at 70% speed
+                horizontal *= moveLimiter;
+                vertical *= moveLimiter;
+            }
+            body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
         }
-        body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
     }
 
     #region Collisions and Damage
@@ -295,38 +302,55 @@ public class PlayerScript : MonoBehaviour
 
         //Update animation
         anim.runtimeAnimatorController = bullAnimController as RuntimeAnimatorController;
+
+        //Bull transformation can attack immediately
+        attackTimer = bullAttackCooldown;
         
         //Update health bar
         healthBar.healthBarSize = 2.5f;
         healthBar.maxHP = bullHP;
         healthBar.yPos = 0.2f;
 
+        //Get rid of momentum
+        body.velocity = new Vector2(0,0);
+
         //Update hitbox size
         boxCollider.size = new Vector2(0.4f, 0.3f);
     }
 
     void beBull() {
+        Debug.Log(transform.position);
         //Charge up attack on click
         if (Input.GetMouseButtonDown(0) && attackTimer > bullAttackCooldown) {
-            anim.SetTrigger("Charge");
             attackTimer = 0;
+            chargeTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            chargeTarget.z = 0;
+            anim.SetTrigger("Charge");
         }
 
         //If attack charged, charge towards the target
         if (anim.GetBool("isCharging")) {
-            Debug.Log("Charging towards target");
+            //You can slightly control direction during the charge by moving your mouse
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            chargeTarget = Vector3.MoveTowards(chargeTarget, mousePos, bullChargeTurn * Time.deltaTime);
+            chargeTarget.z = 0;
+
             transform.position = Vector3.MoveTowards(transform.position, chargeTarget, bullChargeSpeed * Time.deltaTime);
-        }
-        //If arrived at the target position, stop charging
-        if (Vector3.Distance(transform.position, chargeTarget) < 0.1f) {
-            Debug.Log("Arrived");
-            anim.SetBool("isCharging", false);
+
+            //If arrived at the target position, stop charging
+            if (Vector3.Distance(transform.position, chargeTarget) < 0.1f) {
+                anim.SetBool("isCharging", false);
+            }
+
+            //If charging too long, stop charging
+            if (attackTimer > bullAttackCooldown) {
+                anim.SetBool("isCharging", false);
+            }
         }
     }
 
     void bullAttack() {
         anim.SetTrigger("Attack");
-        chargeTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         anim.SetBool("isCharging", true);
     }
     #endregion
