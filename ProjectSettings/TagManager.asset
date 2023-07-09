@@ -10,6 +10,8 @@ TagManager:
   - SnakeAttack
   - HippoAttack
   - Hippo
+  - Hitbox
+  - Bull
   layers:
   - Default
   - TransparentFX

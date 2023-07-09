@@ -48,6 +48,13 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private GameObject hippoAttackCircle;
     [SerializeField] private float hippoAttackRadius;
     [SerializeField] private RuntimeAnimatorController hippoAnimController;
+
+    [Header("Bull")]
+    [SerializeField] private int bullHP;
+    [SerializeField] private float bullAttackCooldown;
+    [SerializeField] private float bullChargeSpeed;
+    private Vector3 chargeTarget;
+    [SerializeField] private RuntimeAnimatorController bullAnimController;
     
     /**
     currentAnimal can be one of the following:
@@ -95,6 +102,9 @@ public class PlayerScript : MonoBehaviour
         else if (currentAnimal == "Hippo") {
             beHippo();
         }
+        else if (currentAnimal == "Bull") {
+            beBull();
+        }
 
         //Movement script
         horizontal = Input.GetAxisRaw("Horizontal");
@@ -105,7 +115,6 @@ public class PlayerScript : MonoBehaviour
         else if (horizontal == 1) {
             sprRender.flipX = false;
         }
-
 
         //Increment attack timer every frame (counts how long it's been since last attack)
         attackTimer += Time.deltaTime;
@@ -124,6 +133,10 @@ public class PlayerScript : MonoBehaviour
             else if (transformInto.CompareTag("Hippo")) {
                 currentAnimal = "Hippo";
                 becomeHippo();
+            }
+            else if (transformInto.CompareTag("Bull")) {
+                currentAnimal = "Bull";
+                becomeBull();
             }
             Destroy(transformInto);
             transformInto = null;
@@ -144,7 +157,7 @@ public class PlayerScript : MonoBehaviour
         body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
     }
 
-    //Collisions with enemies/bullets
+    #region Collisions and Damage
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("Acorn") && other.GetComponent<AcornScript>().shotBy == "Enemy") {
             Destroy(other.gameObject);
@@ -154,9 +167,16 @@ public class PlayerScript : MonoBehaviour
             currentHP--;
         }
         else if (other.gameObject.CompareTag("HippoAttack") && other.GetComponent<HippoAttackCircleScript>().shotBy == "Enemy") {
-            currentHP -= 2; //Hippo
+            currentHP -= 2; //Hippo deals 2x damage
         }
     }
+
+    void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Bull")) {
+            currentHP--;
+        }
+    }
+    #endregion
 
     #region Squirrel Code
     void becomeSquirrel() //This runs only on the first frame of being a squirrel
@@ -267,4 +287,47 @@ public class PlayerScript : MonoBehaviour
     }
     #endregion
     
+    #region Bull Code
+    void becomeBull() {
+        //Update stats
+        runSpeed = 0;
+        currentHP = bullHP;
+
+        //Update animation
+        anim.runtimeAnimatorController = bullAnimController as RuntimeAnimatorController;
+        
+        //Update health bar
+        healthBar.healthBarSize = 2.5f;
+        healthBar.maxHP = bullHP;
+        healthBar.yPos = 0.2f;
+
+        //Update hitbox size
+        boxCollider.size = new Vector2(0.4f, 0.3f);
+    }
+
+    void beBull() {
+        //Charge up attack on click
+        if (Input.GetMouseButtonDown(0) && attackTimer > bullAttackCooldown) {
+            anim.SetTrigger("Charge");
+            attackTimer = 0;
+        }
+
+        //If attack charged, charge towards the target
+        if (anim.GetBool("isCharging")) {
+            Debug.Log("Charging towards target");
+            transform.position = Vector3.MoveTowards(transform.position, chargeTarget, bullChargeSpeed * Time.deltaTime);
+        }
+        //If arrived at the target position, stop charging
+        if (Vector3.Distance(transform.position, chargeTarget) < 0.1f) {
+            Debug.Log("Arrived");
+            anim.SetBool("isCharging", false);
+        }
+    }
+
+    void bullAttack() {
+        anim.SetTrigger("Attack");
+        chargeTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        anim.SetBool("isCharging", true);
+    }
+    #endregion
 }

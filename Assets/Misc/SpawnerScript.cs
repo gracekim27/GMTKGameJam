@@ -7,6 +7,7 @@ public class SpawnerScript : MonoBehaviour
     [SerializeField] private GameObject squirrel;
     [SerializeField] private GameObject snake;
     [SerializeField] private GameObject hippo;
+    [SerializeField] private GameObject bull;
     [SerializeField] private float spawnCooldown;
     private float spawnTimer;
     public int waveNumber;
@@ -40,27 +41,27 @@ public class SpawnerScript : MonoBehaviour
         int spawnWall = Random.Range(1,5); // Randomly select a wall to spawn each animal from
         switch (spawnWall) {
             case 1: //top
-                xSpawn = Random.Range(-3.2f, 3.2f);
+                xSpawn = Random.Range(-2f, 2f);
                 ySpawn = 1.8f;
                 break;
             case 2: //right
                 xSpawn = 3.2f;
-                ySpawn = Random.Range(-1.8f, 1.8f);
+                ySpawn = Random.Range(-1f, 1f);
                 break;
             case 3: //bottom
-                xSpawn = Random.Range(-3.2f, 3.2f);
+                xSpawn = Random.Range(-2f, 2f);
                 ySpawn = -1.8f;
                 break;
             case 4: //left
                 xSpawn = -3.2f;
-                ySpawn = Random.Range(-1.8f, 1.8f);
+                ySpawn = Random.Range(-1f, 1f);
                 break;
         }
         return new Vector3(xSpawn, ySpawn, 0);
     }
 
     public GameObject spawnRandomAnimal() {
-        int randomAnimal = Random.Range(1,4);
+        int randomAnimal = Random.Range(4,5);
         GameObject spawnAnimal;
         switch (randomAnimal) {
             case 1:
@@ -71,6 +72,9 @@ public class SpawnerScript : MonoBehaviour
                 break;
             case 3:
                 spawnAnimal = hippo;
+                break;
+            case 4:
+                spawnAnimal = bull;
                 break;
             default:
                 spawnAnimal = squirrel;

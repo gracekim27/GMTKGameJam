@@ -10,7 +10,6 @@ public class AcornScript : MonoBehaviour
     public Vector3 dir;
     public string shotBy;
     public AudioSource audioSource;
-    public AudioClip clip;
     public float volume=0.5f;
 
     /**
@@ -25,7 +24,6 @@ public class AcornScript : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        audioSource.clip = clip;
         audioSource.Play();
 
         if (shotBy == "Player") { 
@@ -45,5 +43,11 @@ public class AcornScript : MonoBehaviour
     //Destroy itself after going off screen
     void OnBecameInvisible() {
         Destroy(gameObject);
+    }
+
+    void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Hitbox")) {
+            Destroy(gameObject);
+        }
     }
 }

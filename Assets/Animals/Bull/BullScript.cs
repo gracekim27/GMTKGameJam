@@ -2,20 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SquirrelScript : MonoBehaviour
+public class BullScript : MonoBehaviour
 {
     [SerializeField] private int maxHP;
     [SerializeField] private float xpDropped;
     private int currentHP;
     [SerializeField] private float attackCooldown;
     private float attackTimer;
-    [SerializeField] private float runSpeed;
-    [SerializeField] private float circleDistance; //How far the squirrel enemy will stay away from the player
+    [SerializeField] private float chargeSpeed;
+    [SerializeField] private float chargeDistance;
+    private Vector3 chargeTarget;
     private GameObject player;
     private Animator anim;
     private SpriteRenderer sprRender;
-    [SerializeField] private GameObject acorn;
-    [SerializeField] private GameObject thisObject;
 
     [Header("Healthbar")]
     [SerializeField] private float healthBarSize;
@@ -24,54 +23,47 @@ public class SquirrelScript : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {        
+    {
         anim = gameObject.GetComponent<Animator>();
         sprRender = gameObject.GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         gameObject.GetComponent<EnemyDamageScript>().currentHP = maxHP;
-
+        anim.SetBool("isCharging", false);
 
         //Initialize health bar
         healthBar = GetComponentInChildren<HealthbarScript>();
         healthBar.healthBarSize = healthBarSize;
         healthBar.maxHP = maxHP;
         healthBar.yPos = healthBarYOffset;
-
-        //Ignore player collision
-        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
     }
 
     // Update is called once per frame
     void Update()
     {
         //Face left if moving left, right if moving right
-        if (transform.position.x > player.transform.position.x) {
-            sprRender.flipX = true;
-        }
-        else if (transform.position.x < player.transform.position.x) {
-            sprRender.flipX = false;
+        if (!anim.GetBool("isCharging")) {
+            if (transform.position.x > player.transform.position.x) {
+                sprRender.flipX = true;
+            }
+            else if (transform.position.x < player.transform.position.x) {
+                sprRender.flipX = false;
+            }
         }
 
-        //Throw acorns
+        //Charge up attack
         if (attackTimer > attackCooldown) {
-            Vector3 shootDirection = player.transform.position - transform.position; //Determine direction to shoot
-            shootDirection.z = 0;
-            Quaternion randomRotation = Quaternion.Euler(0, 0, Random.Range(0.0f, 360.0f));
-            GameObject acornShot = Instantiate(acorn, transform.position, randomRotation); //Spawn bullet with random rotation
-            acornShot.GetComponent<AcornScript>().dir = shootDirection;
-            acornShot.GetComponent<AcornScript>().shotBy = "Enemy";
-
+            anim.SetTrigger("Charge");
             attackTimer = 0;
         }
         attackTimer += Time.deltaTime;
 
-        //Move towards player if further than circleDistance, back up if closer than circleDistance
-        float dist = Vector3.Distance(transform.position, player.transform.position);
-        if (dist > circleDistance) {
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, runSpeed * Time.deltaTime);
+        //If attack charged, charge towards the player
+        if (anim.GetBool("isCharging")) {
+            transform.position = Vector3.MoveTowards(transform.position, chargeTarget, chargeSpeed * Time.deltaTime);
         }
-        else {
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, -runSpeed * Time.deltaTime);
+        //If arrived at the target position, stop charging
+        if (Vector3.Distance(transform.position, chargeTarget) < 0.1f) {
+            anim.SetBool("isCharging", false);
         }
 
         //Update health bar
@@ -92,9 +84,10 @@ public class SquirrelScript : MonoBehaviour
         }
     }
 
-    // void OnDrawGizmos()
-    // {
-    //     Gizmos.color = Color.red;
-    //     Gizmos.DrawWireSphere(transform.position, circleDistance);
-    // }
+    void bullAttack() {
+        anim.SetTrigger("Attack");
+        Vector3 directionToPlayer = player.transform.position - transform.position;
+        chargeTarget = directionToPlayer.normalized * chargeDistance * Random.Range(0.75f,1.25f); //Add some random variation to charge distance
+        anim.SetBool("isCharging", true);
+    }
 }
