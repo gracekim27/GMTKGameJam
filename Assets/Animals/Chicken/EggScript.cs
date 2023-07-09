@@ -41,9 +41,7 @@ public class EggScript : MonoBehaviour
         //Explode after explodeTime seconds
         timer += Time.deltaTime;
         if (timer >= explodeTime) {
-            GameObject explosion = Instantiate(explodeCircle, transform.position, Quaternion.identity);
-            explosion.GetComponent<EggExplodeCircleScript>().shotBy = shotBy;
-            Destroy(gameObject);
+            ExplodeEgg();
         }
 
         //Rotate
@@ -56,8 +54,20 @@ public class EggScript : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.CompareTag("Hitbox")) {
-            Destroy(gameObject);
+        if (shotBy == "Player" && !other.gameObject.CompareTag("Player")) {
+            ExplodeEgg();
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other) {
+        if (shotBy == "Enemy" && other.CompareTag("Player")) {
+            ExplodeEgg();
+        }
+    }
+
+    void ExplodeEgg() {
+        GameObject explosion = Instantiate(explodeCircle, transform.position, Quaternion.identity);
+        explosion.GetComponent<EggExplodeCircleScript>().shotBy = shotBy;
+        Destroy(gameObject);
     }
 }

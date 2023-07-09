@@ -741,7 +741,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -1195,7 +1195,7 @@ MonoBehaviour:
   snake: {fileID: 6442983436487409383, guid: 03b627e347ceb40f1bb4bf1a97efb57d, type: 3}
   hippo: {fileID: 9065482878619436000, guid: cdaec872387c74fe4911257b2ca09c72, type: 3}
   bull: {fileID: 6078647611585943447, guid: 9a72236e62aba4693b8acc06ee2e3fb3, type: 3}
-  spawnCooldown: 1
+  spawnCooldown: 0.1
   waveNumber: 0
 --- !u!4 &2010819809
 Transform:

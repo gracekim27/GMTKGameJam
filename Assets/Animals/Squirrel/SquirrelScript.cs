@@ -36,9 +36,6 @@ public class SquirrelScript : MonoBehaviour
         healthBar.healthBarSize = healthBarSize;
         healthBar.maxHP = maxHP;
         healthBar.yPos = healthBarYOffset;
-
-        //Ignore player collision
-        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
     }
 
     // Update is called once per frame

@@ -12,6 +12,8 @@ TagManager:
   - Hippo
   - Hitbox
   - Bull
+  - Chicken
+  - ChickenAttack
   layers:
   - Default
   - TransparentFX

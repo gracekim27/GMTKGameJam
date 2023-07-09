@@ -56,6 +56,15 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private float bullChargeTurn;
     private Vector3 chargeTarget;
     [SerializeField] private RuntimeAnimatorController bullAnimController;
+
+    [Header("Chicken")]
+    [SerializeField] private int chickenHP;
+    [SerializeField] private float chickenAttackCooldown;
+    [SerializeField] private float chickenRunSpeed;
+    private bool chickenIsLayingEgg;
+    [SerializeField] private RuntimeAnimatorController chickenAnimController;
+    [SerializeField] private GameObject egg;
+
     
     /**
     currentAnimal can be one of the following:
@@ -106,6 +115,9 @@ public class PlayerScript : MonoBehaviour
         else if (currentAnimal == "Bull") {
             beBull();
         }
+        else if (currentAnimal == "Chicken") {
+            beChicken();
+        }
 
         //Movement script
         horizontal = Input.GetAxisRaw("Horizontal");
@@ -143,6 +155,10 @@ public class PlayerScript : MonoBehaviour
                 currentAnimal = "Bull";
                 becomeBull();
             }
+            else if (transformInto.CompareTag("Chicken")) {
+                currentAnimal = "Chicken";
+                becomeChicken();
+            }
             Destroy(transformInto);
             transformInto = null;
         }
@@ -154,7 +170,8 @@ public class PlayerScript : MonoBehaviour
     //More movement handling
     private void FixedUpdate() 
     {
-        if (currentAnimal != "Bull") {
+        if (currentAnimal != "Bull" && !(currentAnimal == "Chicken" && chickenIsLayingEgg))
+        {
             if (horizontal != 0 && vertical != 0) {// Check for diagonal movement
                 // limit movement speed diagonally, so you move at 70% speed
                 horizontal *= moveLimiter;
@@ -246,18 +263,19 @@ public class PlayerScript : MonoBehaviour
         }
     }
     void snakeAttack() {
-        GameObject snakeAttack = Instantiate(snakeAttackCircle, transform.position, Quaternion.identity); //Create a circle collider around the attack
-        CircleCollider2D snakeAttackCollider = snakeAttack.GetComponent<CircleCollider2D>(); //Set the position and radius of the attack collider to preset values
+        Vector3 attackCirclePos;
 
         if (!sprRender.flipX) { //Attack right
-            snakeAttackCollider.offset = snakeAttackOffset; 
+            attackCirclePos = new Vector3(transform.position.x+snakeAttackOffset.x, transform.position.y+snakeAttackOffset.y, transform.position.z);
+            snakeAttackCircle.transform.position = attackCirclePos;
         }
         else { //Attack left
-            snakeAttackOffset.x = -snakeAttackOffset.x;
-            snakeAttackCollider.offset = snakeAttackOffset;
-            snakeAttackOffset.x = -snakeAttackOffset.x;
+            attackCirclePos = new Vector3(transform.position.x-snakeAttackOffset.x, transform.position.y+snakeAttackOffset.y, transform.position.z);
+            snakeAttackCircle.transform.position = attackCirclePos;
         }
-        snakeAttackCollider.radius = snakeAttackRadius;
+
+        GameObject snakeAttack = Instantiate(snakeAttackCircle, attackCirclePos, Quaternion.identity); //Create a circle collider around the attack
+
         snakeAttack.GetComponent<SnakeAttackCircleScript>().shotBy = "Player";
     }
     #endregion
@@ -319,7 +337,6 @@ public class PlayerScript : MonoBehaviour
     }
 
     void beBull() {
-        Debug.Log(transform.position);
         //Charge up attack on click
         if (Input.GetMouseButtonDown(0) && attackTimer > bullAttackCooldown) {
             attackTimer = 0;
@@ -352,6 +369,47 @@ public class PlayerScript : MonoBehaviour
     void bullAttack() {
         anim.SetTrigger("Attack");
         anim.SetBool("isCharging", true);
+    }
+    #endregion
+
+    #region Chicken Code
+    void becomeChicken() //This runs only on the first frame of being a snake
+    {
+        chickenIsLayingEgg = false;
+
+        //Update stats
+        runSpeed = chickenRunSpeed;
+        currentHP = chickenHP;
+
+        //Update animation
+        anim.runtimeAnimatorController = chickenAnimController as RuntimeAnimatorController;
+        
+        //Update health bar
+        healthBar.healthBarSize = 1f;
+        healthBar.maxHP = chickenHP;
+        healthBar.yPos = 0.1f;
+
+        //Update hitbox size
+        boxCollider.size = new Vector2(0.2f, 0.2f);
+    }
+    void beChicken() {
+        //Lay eggs
+        if (attackTimer > chickenAttackCooldown && Input.GetMouseButtonDown(0)) {
+            chickenIsLayingEgg = true;
+            body.velocity = new Vector2(0,0); //Get rid of momentum
+            anim.SetTrigger("Attack");
+            attackTimer = 0;
+        }
+    }
+    void chickenAttack() {
+        Vector3 shootDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position; //Determine direction to shoot
+        shootDirection.z = 0;
+        Quaternion randomRotation = Quaternion.Euler(0, 0, Random.Range(0.0f, 360.0f));
+        GameObject eggShot = Instantiate(egg, transform.position, randomRotation); //Spawn bullet with random rotation
+        eggShot.GetComponent<EggScript>().dir = shootDirection.normalized;
+        eggShot.GetComponent<EggScript>().shotBy = "Player";
+
+        chickenIsLayingEgg = false;
     }
     #endregion
 }
