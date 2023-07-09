@@ -23,6 +23,7 @@ public class FireflyScript : MonoBehaviour
         if (wanderTimer >= wanderTime) {
             wanderTimer = 0;
             nextDirection = RandomWanderTarget();
+            wanderTime = Random.Range(wanderTime + 0.1f, wanderTime - 0.1f);
         }
         transform.position = Vector3.Lerp(transform.position, nextDirection, wanderSpeed * Time.deltaTime);
     }

@@ -94,14 +94,6 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Space to switch animals (placeholder)
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            if (currentAnimal == "Squirrel") {
-                currentAnimal = "Hippo";
-                becomeHippo();
-            }
-        }
-
         //Check what type of animal you are first thing each frame
         if (currentAnimal == "Squirrel") {
             beSquirrel();

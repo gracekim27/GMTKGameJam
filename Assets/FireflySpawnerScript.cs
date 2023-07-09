@@ -18,7 +18,7 @@ public class FireflySpawnerScript : MonoBehaviour
     void Update()
     {
         spawnTimer += Time.deltaTime;
-        if (spawnTimer >= spawnCooldown) {
+        if (spawnTimer >= spawnCooldown + Random.Range(-0.5f, 0.5f)) {
             Instantiate(firefly, spawnXY(), Quaternion.identity);
             spawnTimer = 0;
         }

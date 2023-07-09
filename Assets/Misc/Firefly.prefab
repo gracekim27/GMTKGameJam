@@ -121,5 +121,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifespan: 15
   wanderSpeed: 0.2
-  wanderTime: 0.5
-  wanderRange: 0.3
+  wanderTime: 1
+  wanderRange: 1
